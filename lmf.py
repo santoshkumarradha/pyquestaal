@@ -16,7 +16,8 @@ class lmf:
                  gmax=10.5,
                  p=5,
                  relax=None,
-                 dyn_iter=0):
+                 dyn_iter=0,
+                 silent=1):
         self.nkabc = nkabc
         self.gmax = gmax
         self.nkgw = nkgw
@@ -29,6 +30,7 @@ class lmf:
         self.relax = relax
         self.minx = dyn_iter
         self.can_run_bands = True
+        self.silent = 1
 
     # initialise mpi command
     def mpi(self, n=1):
@@ -92,9 +94,11 @@ class lmf:
                                " atm." + self.ctrl + " save." + self.ctrl +
                                " init." + self.ctrl + " hssn." + self.ctrl +
                                " -r")
-        print("rm init 1 rst." + self.ctrl + " mixm." + self.ctrl + " wkp." +
-              self.ctrl + " basp*" + " atm." + self.ctrl + " save." +
-              self.ctrl + " init." + self.ctrl + " hssn." + self.ctrl + " -r")
+        if not self.silent:
+            print("rm init 1 rst." + self.ctrl + " mixm." + self.ctrl +
+                  " wkp." + self.ctrl + " basp*" + " atm." + self.ctrl +
+                  " save." + self.ctrl + " init." + self.ctrl + " hssn." +
+                  self.ctrl + " -r")
 
     def write_infile(self, atoms):
         write(self.ctrl + ".cif", atoms)
@@ -121,19 +125,25 @@ class lmf:
         self.clean()
         self.write_infile(atoms)
         temp_cmd = self.mpi() + " lmfa ctrl." + self.ctrl
-        print("running " + temp_cmd + "......")
+        if not self.silent:
+            print("running " + temp_cmd + "......")
         out, err = self.runcmd(temp_cmd)
-        print("done\n")
+        if not self.silent:
+            print("done\n")
         if err == '':
             temp_cmd = "cp basp0." + self.ctrl + " basp." + self.ctrl
-            print("running " + temp_cmd + "......")
+            if not self.silent:
+                print("running " + temp_cmd + "......")
             out, err = self.runcmd(temp_cmd)
-            print("done\n")
+            if not self.silent:
+                print("done\n")
         if err == '':
             temp_cmd = self.mpi() + " lmfa ctrl." + self.ctrl
-            print("running " + temp_cmd + "......")
+            if not self.silent:
+                print("running " + temp_cmd + "......")
             out, err = self.runcmd(temp_cmd)
-            print("done\n")
+            if not self.silent:
+                print("done\n")
 
     def mksyml(self, kpts=41):
 
@@ -158,9 +168,11 @@ class lmf:
                 )
             else:
                 temp_cmd = "mksyml.py -kpts=" + str(kpts) + " -c=" + self.ctrl
-                print("running " + temp_cmd + "......")
+                if not self.silent:
+                    print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
-                print("done\n")
+                if not self.silent:
+                    print("done\n")
                 import os.path
                 if os.path.isfile("syml." + self.ctrl) == False:
                     self.can_run_bands = False
@@ -171,9 +183,11 @@ class lmf:
         self.mksyml(kpts)
         temp_cmd = self.mpi(
             self.p) + " lmf -vnit=1 --band~mq~fn=syml " + self.ctrl
-        print("running " + temp_cmd + "......")
+        if not self.silent:
+            print("running " + temp_cmd + "......")
         out, err = self.runcmd(temp_cmd)
-        print("done\n")
+        if not self.silent:
+            print("done\n")
         import os.path
         if os.path.isfile("bnds." + self.ctrl) == False:
             self.can_run_bands = False
@@ -197,9 +211,11 @@ class lmf:
             )
         else:
             temp_cmd = "plotquestaal.py --bands --erange -6 6 -c=" + self.ctrl
-            print("running " + temp_cmd + "......")
+            if not self.silent:
+                print("running " + temp_cmd + "......")
             out, err = self.runcmd(temp_cmd)
-            print("done\n")
+            if not self.silent:
+                print("done\n")
             import os.path
             if os.path.isfile("plot_bands.png") == False:
                 print("Bands plotted and stored in plot_bands.png")
@@ -211,40 +227,52 @@ class lmf:
         self.clean()
         self.write_infile(atoms)
         temp_cmd = self.mpi() + " lmfa ctrl." + self.ctrl
-        print("running " + temp_cmd + "......")
+        if not self.silent:
+            print("running " + temp_cmd + "......")
         out, err = self.runcmd(temp_cmd)
-        print("done\n")
+        if not self.silent:
+            print("done\n")
         if err == '':
             temp_cmd = "cp basp0." + self.ctrl + " basp." + self.ctrl
-            print("running " + temp_cmd + "......")
+            if not self.silent:
+                print("running " + temp_cmd + "......")
             out, err = self.runcmd(temp_cmd)
-            print("done\n")
+            if not self.silent:
+                print("done\n")
         if err == '':
             temp_cmd = self.mpi() + " lmfa ctrl." + self.ctrl
-            print("running " + temp_cmd + "......")
+            if not self.silent:
+                print("running " + temp_cmd + "......")
             out, err = self.runcmd(temp_cmd)
-            print("done\n")
+            if not self.silent:
+                print("done\n")
         if err == '':
             if self.minx > 0:
                 temp_cmd = self.mpi(
                     self.p
                 ) + " lmf -vnit=10 --wpos=pos --wforce=force " + self.ctrl + ">output"
-                print("running " + temp_cmd + "......")
+                if not self.silent:
+                    print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
-                print("done\n")
+                if not self.silent:
+                    print("done\n")
                 temp_cmd = self.mpi(
                     self.p
                 ) + " lmf -vnit=1000 --rpos=pos --wpos=pos_relax --wforce=force " + self.ctrl + ">output"
-                print("running " + temp_cmd + "......")
+                if not self.silent:
+                    print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
-                print("done\n")
+                if not self.silent:
+                    print("done\n")
             else:
                 temp_cmd = self.mpi(
                     self.p
                 ) + " lmf -vnit=1000 --wforce=force --wpos=pos " + self.ctrl + ">output"
-                print("running " + temp_cmd + "......")
+                if not self.silent:
+                    print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
-                print("done\n")
+                if not self.silent:
+                    print("done\n")
         if err == '':
             f_read = open("save." + self.ctrl, "r")
             last_line = f_read.readlines()[-1][0]
