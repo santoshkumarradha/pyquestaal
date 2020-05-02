@@ -31,6 +31,7 @@ class lmf:
         self.minx = dyn_iter
         self.can_run_bands = True
         self.silent = 1
+        self.sym_off=""
 
     # initialise mpi command
     def mpi(self, n=1):
@@ -220,18 +221,34 @@ class lmf:
             if os.path.isfile("plot_bands.png") == False:
                 print("Bands plotted and stored in plot_bands.png")
 
-    def calculate(self, atoms):
+    def calculate(self, atoms,sym=True):
         self.positions = atoms.get_positions().copy()
         self.cell = atoms.get_cell().copy()
         self.pbc = atoms.get_pbc().copy()
         self.clean()
         self.write_infile(atoms)
-        temp_cmd = self.mpi() + " lmfa ctrl." + self.ctrl
+            
+        temp_cmd = self.mpi() + " lmfa ctrl." + self.ctrl + self.sym_off + ">out.lmfa"
         if not self.silent:
             print("running " + temp_cmd + "......")
         out, err = self.runcmd(temp_cmd)
         if not self.silent:
             print("done\n")
+        #------Trying without SYMGRP if lmfa does not run ! 
+        if self.get_error("out.lmfa")==-1:
+            print("Unable to run lmfa. Trying without SYMGRP might take longer to run :(")
+            # with open("ctrl." + self.ctrl, "a") as myfile:
+            #     myfile.write("SYMGRP E")
+            self.sym_off=" --nosym "
+
+        #----------------Second lmfa attempt without SYMGRP
+        temp_cmd = self.mpi() + " lmfa "  + self.sym_off + self.ctrl
+        if not self.silent:
+            print("running " + temp_cmd + "......")
+        out, err = self.runcmd(temp_cmd)
+        if not self.silent:
+            print("done\n")
+
         if err == '':
             temp_cmd = "cp basp0." + self.ctrl + " basp." + self.ctrl
             if not self.silent:
@@ -240,7 +257,7 @@ class lmf:
             if not self.silent:
                 print("done\n")
         if err == '':
-            temp_cmd = self.mpi() + " lmfa ctrl." + self.ctrl
+            temp_cmd = self.mpi() + " lmfa ctrl." + self.sym_off + self.ctrl
             if not self.silent:
                 print("running " + temp_cmd + "......")
             out, err = self.runcmd(temp_cmd)
@@ -250,7 +267,7 @@ class lmf:
             if self.minx > 0:
                 temp_cmd = self.mpi(
                     self.p
-                ) + " lmf -vnit=10 --wpos=pos --wforce=force " + self.ctrl + ">output"
+                ) + " lmf -vnit=10 --wpos=pos --wforce=force " + self.sym_off + self.ctrl + ">output"
                 if not self.silent:
                     print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
@@ -258,7 +275,7 @@ class lmf:
                     print("done\n")
                 temp_cmd = self.mpi(
                     self.p
-                ) + " lmf -vnit=1000 --rpos=pos --wpos=pos_relax --wforce=force " + self.ctrl + ">output"
+                ) + " lmf -vnit=1000 --rpos=pos --wpos=pos_relax --wforce=force " + self.sym_off + self.ctrl + ">output"
                 if not self.silent:
                     print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
@@ -267,7 +284,7 @@ class lmf:
             else:
                 temp_cmd = self.mpi(
                     self.p
-                ) + " lmf -vnit=1000 --wforce=force --wpos=pos " + self.ctrl + ">output"
+                ) + " lmf -vnit=1000 --wforce=force --wpos=pos " + self.sym_off + self.ctrl + ">output"
                 if not self.silent:
                     print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
@@ -324,7 +341,17 @@ class lmf:
         for i in open("output", 'r'):
             if "Fermi" in i:
                 self.e_fermi = float(i.split(";")[0].split(":")[-1])
-
+    @staticmethod
+    def get_error(fname):
+        exit_error=0
+        for i in open(fname, 'r'):
+            if "Exit" in i:
+                try:
+                    exit_error=float(i.split()[1])
+                except:
+                    None
+        return exit_error
+                
     def read_potential(self):
         for i in open("save." + self.ctrl, 'r'):
             if "c" in i or "C" in i:
