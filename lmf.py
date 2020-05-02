@@ -74,7 +74,7 @@ class lmf:
     # blm module
     def blm(self):
         cmd = self.mpi(
-        ) + " blm --express=0 --ctrl=ctrl --molstat init." + self.ctrl
+        ) + " blm --express=0 --ctrl=ctrl --molstat --noshorten init." + self.ctrl
         cmd += " --nk=" + str(self.nkabc).strip("][ ").replace(" ", "")
         cmd += " --gmax=" + str(self.gmax)
         if self.minx > 0:
