@@ -75,7 +75,7 @@ class lmf:
     # blm module
     def blm(self):
         cmd = self.mpi(
-        ) + " blm --express=0 --ctrl=ctrl --molstat --noshorten init." + self.ctrl
+        ) + " blm --express=0 --ctrl=ctrl --molstat --noshorten --fixpos:tol=.0001 init." + self.ctrl
         cmd += " --nk=" + str(self.nkabc).strip("][ ").replace(" ", "")
         cmd += " --gmax=" + str(self.gmax)
         if self.minx > 0:
@@ -270,7 +270,7 @@ class lmf:
             if self.minx > 0:
                 temp_cmd = self.mpi(
                     self.p
-                ) + " lmf -vnit=10 --wpos=pos --wforce=force " + self.sym_off + self.ctrl + ">output"
+                ) + " lmf -vnit=10 --wpos=pos --wforce=force --pr51 " + self.sym_off + self.ctrl + ">output"
                 if not self.silent:
                     print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
@@ -278,7 +278,7 @@ class lmf:
                     print("done\n")
                 temp_cmd = self.mpi(
                     self.p
-                ) + " lmf -vnit=1000 --rpos=pos --wpos=pos_relax --wforce=force " + self.sym_off + self.ctrl + ">output"
+                ) + " lmf -vnit=1000 --rpos=pos --wpos=pos_relax --wforce=force --pr51 " + self.sym_off + self.ctrl + ">output"
                 if not self.silent:
                     print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
@@ -287,7 +287,7 @@ class lmf:
             else:
                 temp_cmd = self.mpi(
                     self.p
-                ) + " lmf -vnit=1000 --wforce=force --wpos=pos " + self.sym_off + self.ctrl + ">output"
+                ) + " lmf -vnit=1000 --wforce=force --wpos=pos --pr51 " + self.sym_off + self.ctrl + ">output"
                 if not self.silent:
                     print("running " + temp_cmd + "......")
                 out, err = self.runcmd(temp_cmd)
