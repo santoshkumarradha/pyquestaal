@@ -1,7 +1,7 @@
 # PyQUESTAAL
 
 
-This is a calculator class that has been written to interface calculations done using [QUESTAAL](http://questaal.org) with highthroughput calculators like [ASE](https://wiki.fysik.dtu.dk/ase/). Note: The module can be used as a stad alone python controler for questaal jobs. 
+This is a calculator class that has been written to interface calculations done using [QUESTAAL](http://questaal.org) with highthroughput calculators like [ASE](https://wiki.fysik.dtu.dk/ase/). Note: The module can be used as a stad alone python controler for questaal jobs.
 
 ### Features
 
@@ -63,6 +63,6 @@ test()
    - Interface with pyamtgen
    - Add the developed lattice relaxation module which uses Genetic Algorithm
    - Make more standalone
-   - More complex praser for questaal output
+   - More complex praser for questaal output (look for questaal-reader repo)
 
 
