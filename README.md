@@ -1,5 +1,6 @@
 # PyQUESTAAL
 
+[![DOI](https://zenodo.org/badge/258655688.svg)](https://zenodo.org/badge/latestdoi/258655688)
 
 This is a calculator class that has been written to interface calculations done using [QUESTAAL](http://questaal.org) with highthroughput calculators like [ASE](https://wiki.fysik.dtu.dk/ase/). Note: The module can be used as a stad alone python controler for questaal jobs.
 
