@@ -57,9 +57,22 @@ def test():
     eos.plot('Ag-eos.png')
 test()
 ```
+### Citation
 
+If you find this work useful, please cite using
+```
+@misc{https://doi.org/10.5281/zenodo.4292415,
+  doi = {10.5281/ZENODO.4292415},
+  url = {https://zenodo.org/record/4292415},
+  author = {Kumar,  Santosh},
+  title = {santoshkumarradha/pyquestaal: Fresh checks.},
+  publisher = {Zenodo},
+  year = {2020},
+  copyright = {Open Access}
+}
+```
 
-### To Doooooooo......
+### To Do
    - control over all variables
    - Interface with pyamtgen
    - Add the developed lattice relaxation module which uses Genetic Algorithm
