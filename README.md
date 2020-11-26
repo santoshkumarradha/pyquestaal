@@ -64,8 +64,8 @@ If you find this work useful, please cite using
 @misc{https://doi.org/10.5281/zenodo.4292415,
   doi = {10.5281/ZENODO.4292415},
   url = {https://zenodo.org/record/4292415},
-  author = {Kumar,  Santosh},
-  title = {santoshkumarradha/pyquestaal: Fresh checks.},
+  author = {Radha, Santosh Kumar},
+  title = {pyQuestaal: An python interface or Questaal quantum codes.},
   publisher = {Zenodo},
   year = {2020},
   copyright = {Open Access}
