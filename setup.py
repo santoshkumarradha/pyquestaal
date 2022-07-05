@@ -7,12 +7,10 @@ here = pathlib.Path(__file__).parent.resolve()
 # Get the long description from the README file
 long_description = (here / "README.md").read_text(encoding="utf-8")
 
-with open("requirements.txt") as f:
-    required = f.read().splitlines()
 
 setup(
     name="pyquestaal",
-    version="0.2.1",
+    version="0.2.3",
     description="Python class to interface with QUESTAAL Quantum codes which is a suite of electronic structure programs.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -31,8 +29,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3 :: Only",
     ],
-    package_dir={"": "pyquestaal"},
-    packages=find_packages(where="pyquestaal"),
+    packages=find_packages(),
     python_requires=">=3.6, <4",
-    install_requires=required,
+    install_requires=["numpy>=1.22.4","ase>=3.21"],
 )

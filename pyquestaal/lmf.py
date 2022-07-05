@@ -17,6 +17,7 @@ class lmf:
                  p=5,
                  relax=None,
                  dyn_iter=0,
+                 n_cores=1,
                  silent=1):
         self.nkabc = nkabc
         self.gmax = gmax
@@ -32,10 +33,11 @@ class lmf:
         self.can_run_bands = True
         self.silent = 1
         self.sym_off = ""
+        self.n_cores=n_cores
 
     # initialise mpi command
-    def mpi(self, n=1):
-        return self.mpi_cmd + "-np " + str(n)
+    def mpi(self, n=None):
+        return self.mpi_cmd + "-np " + str(self.n_cores)
 
     # running shell commands
     def runcmd(self, exe, opt=""):

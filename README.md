@@ -2,13 +2,15 @@
 
 [![DOI](https://zenodo.org/badge/258655688.svg)](https://zenodo.org/badge/latestdoi/258655688)
 
-This is a calculator class that has been written to interface calculations done using [QUESTAAL](http://questaal.org) with highthroughput calculators like [ASE](https://wiki.fysik.dtu.dk/ase/). Note: The module can be used as a stad alone python controler for questaal jobs.
+This is a calculator class that has been written to interface calculations done using [QUESTAAL](http://questaal.org) with highthroughput calculators like [ASE](https://wiki.fysik.dtu.dk/ase/). 
+
+>Note: The module can be used as a stand alone python controller for questaal jobs as well.
 
 ### Features
 
   - make symmetry line files supported by QUESTAAL on the fly with a given structure
   - plot bands directly *(requires plotquestaal.py)*
-  - relaxiations included
+  - relaxations included
   - can read forces from output files
   - Control number of processors
 
@@ -17,7 +19,7 @@ This is a calculator class that has been written to interface calculations done 
 ### Installation
  1. Copy the files lmf.py to the working directory
  2. Import them and use !
- 3. Make sure "lmf" is recogonizable in the path and also modify the type of mpi call. default "mpirun"
+ 3. Make sure "lmf" is recognizable in the path and also modify the type of mpi call. default "mpirun"
  
 ### Examples
 Simple example usage shown in 	[simple_examples.ipynb](https://github.com/santoshkumarradha/pyquestaal/blob/pyquestaal/simple_example.ipynb) 
@@ -77,6 +79,6 @@ If you find this work useful, please cite using
    - Interface with pyamtgen
    - Add the developed lattice relaxation module which uses Genetic Algorithm
    - Make more standalone
-   - More complex praser for questaal output (look for questaal-reader repo)
+   - More complex parser for questaal output (look for questaal-reader repo)
 
 
