@@ -3,7 +3,7 @@ import ase
 from ase.io import iread, write
 import subprocess
 import numpy as np
-
+import warnings
 
 class lmf:
 
@@ -316,7 +316,7 @@ class lmf:
             self.initialize(atoms)
             self.calculate(atoms)
             if self.converged == False:
-                raise RuntimeError('Not yet converged')
+                raise warnings.warn('Not yet converged')
         elif ((self.positions != atoms.get_positions()).any() or
               (self.pbc != atoms.get_pbc()).any() or
               (self.cell != atoms.get_cell()).any()):
